@@ -40,36 +40,50 @@ class OrderTest {
         System.setOut(System.out);
 	}
 	
+
+	@Test
+	@DisplayName("displayChoiceSelected -> Chicken (1)")
+	final void Given_Chicken_When_DisplayMenuSelected_Then_DisplayCorrectSentence() {
+		
+		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
+		myOrder.displayChoiceSelected(1, "Menu", choiceArray);
+		
+		String output = outContent.toString().replace("\r\n", "\n");
+	    assertEquals("Vous avez choisi comme Menu : Poulet\n", output);
+    }		
 	
 	@Test
-	@DisplayName("displayMenuSelected -> Poulet (1)")
-	final void Given_Chicken_When_DisplayMenuSelected_DisplayCorrectSentence() {
-		myOrder.displayMenuSelected(1);	
+	@DisplayName("displayChoiceSelected -> Beef (2)")
+	final void Given_Beef_When_DisplayMenuSelected_Then_DisplayCorrectSentence() {
+		
+		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
+		myOrder.displayChoiceSelected(2, "Menu", choiceArray);
+		
 		String output = outContent.toString().replace("\r\n", "\n");
-	    assertEquals("Vous avez choisi comme menu : Poulet\n", output);
-    }	
+	    assertEquals("Vous avez choisi comme Menu : Boeuf\n", output);
+	}	
+	
 	@Test
-	@DisplayName("displayMenuSelected -> Boeuf (2)")
-	final void Given_Beef_When_DisplayMenuSelected_DisplayCorrectSentence() {
-		myOrder.displayMenuSelected(2);	
+	@DisplayName("displayChoiceSelected -> Vegetarian (3)")
+	final void Given_Vegetarian_When_DisplayMenuSelected_Then_DisplayCorrectSentence() {
+		
+		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
+		myOrder.displayChoiceSelected(3, "Menu", choiceArray);
+		
 		String output = outContent.toString().replace("\r\n", "\n");
-	    assertEquals("Vous avez choisi comme menu : Boeuf\n", output);
-	}
-	@Test
-	@DisplayName("displayMenuSelected -> Végétarien (3)")
-	final void Given_Vegetarian_When_DisplayMenuSelected_DisplayCorrectSentence() {
-		myOrder.displayMenuSelected(3);
-		String output = outContent.toString().replace("\r\n", "\n");
-	    assertEquals("Vous avez choisi comme menu : Végétarien\n", output);
-	}
-	@Test
-	@DisplayName("displayMenuSelected -> Mauvais choix (<1 ou >3)")
-	final void Given_BadChoice_When_DisplayMenuSelected_DisplayCorrectSentence() {
-		myOrder.displayMenuSelected(0);	
-		String output = outContent.toString().replace("\r\n", "\n");	
-	    assertEquals("Vous n'avez pas choisi de menu parmi les choix proposés\n=>", output);
+	    assertEquals("Vous avez choisi comme Menu : Végétarien\n", output);
 	}
 	
+	@Test
+	@DisplayName("displayChoiceSelected -> Bad choice (<1 or >3)")
+	final void Given_BadChoice_When_DisplayMenuSelected_Then_DisplayCorrectSentence() {
+		
+		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
+		myOrder.displayChoiceSelected(0, "Menu", choiceArray);
+		
+		String output = outContent.toString().replace("\r\n", "\n");		
+	    assertEquals("Vous n'avez pas choisi de Menu parmi les choix proposés\n=>", output);
+	}
 	
 	private static Order myOrder;
 	private static ByteArrayOutputStream outContent;

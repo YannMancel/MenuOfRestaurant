@@ -6,66 +6,80 @@ import java.util.Scanner;
 public class Order {
 	
 	public Order() {
-		scan = new Scanner(System.in);
+		
+		this.scan = new Scanner(System.in);
+		
+		// Initialization of the menu array	
+		this.menuList = new String[3];
+		this.menuList[0] = "Poulet";
+		this.menuList[1] = "Boeuf";
+		this.menuList[2] = "Végétarien";
 	}
 	
 	/**
-	 * Display the available menus
+	 * Displays the available choices for a given context
+	 * 
+	 * @param contextOfChoice String which defines the choice type
+	 * @param choiceArray String array which stores the possible choices 
 	 */
-	public void displayAvailableMenu() {	
+	public void displayChoice(String contextOfChoice, String[] choiceArray) {	
 		
-    	System.out.println("Choix menu:");
-    	System.out.println("\t1 - Poulet");
-    	System.out.println("\t2 - Boeuf");
-    	System.out.println("\t3 - Végétarien");
-    	System.out.println("Que souhaitez-vous comme menu ?");	
+    	System.out.println("Choix " + contextOfChoice + ":");
+    	
+    	int i = 1;
+    	
+    	for(String str : choiceArray) {
+    		System.out.println("\t" + i + " - " + str);
+    		i++;
+    	}
+    	
+    	System.out.println("Que souhaitez-vous comme " + contextOfChoice + " ?");	
     	System.out.print("=>");
 	}
 	
-	/**
-	 * Display the menu selected
-	 * @param menu Number of Menu selected
+	/** 
+	 * Display the selected choice in the given context
+	 * 
+	 * @param SelectedChoice Integer value which represents the number of selected choice
+	 * @param contextOfChoice String which defines the choice type
+	 * @param choiceArray String array which stores the possible choices
 	 */
-	public void displayMenuSelected(int menu) {	
+	public void displayChoiceSelected(int SelectedChoice, String contextOfChoice, String[] choiceArray) {	
 		
-		switch (menu) {
-			case 1: 
-				System.out.println("Vous avez choisi comme menu : Poulet");
-				break;
-			case 2:
-				System.out.println("Vous avez choisi comme menu : Boeuf");
-				break;
-			case 3:
-				System.out.println("Vous avez choisi comme menu : Végétarien");
-				break;
-			default:
-				System.out.println("Vous n'avez pas choisi de menu parmi les choix proposés"); 	
-				System.out.print("=>");
-		}	
+		// Bad choice, the number is outside of array dimensions of choiceArray: [1 to choiceArray.length]
+		if (SelectedChoice<1 || SelectedChoice>choiceArray.length) {
+			System.out.println("Vous n'avez pas choisi de " + contextOfChoice + " parmi les choix proposés"); 	
+			System.out.print("=>");
+			return;
+		}
+		
+		System.out.println("Vous avez choisi comme " + contextOfChoice + " : " + choiceArray[SelectedChoice - 1]);
 	}
 	
 	/**
 	 * Run of the order
 	 */
-	public void run() {
+	public void runMenu() {
 	
-		this.displayAvailableMenu();
+		// Display the available menu
+		this.displayChoice("Menu", this.menuList);
 		
 		int result = -1;
     		
 		do {
 			try {
 				result = scan.nextInt();				
-				this.displayMenuSelected(result);
+				this.displayChoiceSelected(result, "Menu", this.menuList);
 			}
 			catch (InputMismatchException e) {
 				scan.next();				
 				System.out.println("Veuilliez saisir un chiffre, s'il vous plaît");
 				System.out.print("=>");
 			}			
-		} while (result<1 || result>3);		
-    	
+		} while (result<1 || result>3);	
+	
 	}
 	
 	private Scanner scan;
+	private String[] menuList;
 }
