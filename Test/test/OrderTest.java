@@ -49,8 +49,8 @@ class OrderTest {
 		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
 		myOrder.displayChoiceSelected(1, "Menu", choiceArray);
 		
-		String output = outContent.toString().replace("\r\n", "\n");
-	    assertEquals("Vous avez choisi comme Menu : Poulet\n", output);
+		String actualOutput = outContent.toString().replace("\r\n", "\n");
+	    assertEquals("Vous avez choisi comme Menu : Poulet\n", actualOutput);
     }	
 	@Test
 	@DisplayName("displayChoiceSelected -> Beef (2)")
@@ -59,8 +59,8 @@ class OrderTest {
 		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
 		myOrder.displayChoiceSelected(2, "Menu", choiceArray);
 		
-		String output = outContent.toString().replace("\r\n", "\n");
-	    assertEquals("Vous avez choisi comme Menu : Boeuf\n", output);
+		String actualOutput = outContent.toString().replace("\r\n", "\n");
+	    assertEquals("Vous avez choisi comme Menu : Boeuf\n", actualOutput);
 	}	
 	@Test
 	@DisplayName("displayChoiceSelected -> Vegetarian (3)")
@@ -69,8 +69,8 @@ class OrderTest {
 		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
 		myOrder.displayChoiceSelected(3, "Menu", choiceArray);
 		
-		String output = outContent.toString().replace("\r\n", "\n");
-	    assertEquals("Vous avez choisi comme Menu : Végétarien\n", output);
+		String actualOutput = outContent.toString().replace("\r\n", "\n");
+	    assertEquals("Vous avez choisi comme Menu : Végétarien\n", actualOutput);
 	}
 	@Test
 	@DisplayName("displayChoiceSelected -> Bad choice (<1 or >3)")
@@ -79,8 +79,8 @@ class OrderTest {
 		String[] choiceArray = {"Poulet", "Boeuf", "Végétarien"};
 		myOrder.displayChoiceSelected(0, "Menu", choiceArray);
 		
-		String output = outContent.toString().replace("\r\n", "\n");		
-	    assertEquals("Vous n'avez pas choisi de Menu parmi les choix proposés! ", output);
+		String actualOutput = outContent.toString().replace("\r\n", "\n");		
+	    assertEquals("Vous n'avez pas choisi de Menu parmi les choix proposés!\n", actualOutput);
 	}
 	
 	@Test
@@ -95,8 +95,8 @@ class OrderTest {
 		int result = myOrder.choiceAndSelection("Menu", choiceArray);		
 		assertEquals(1, result);	
 			
-		//String[] output = outContent.toString().replace("\r\n", "\n").split("\n");
-        //assertEquals("Vous avez choisi comme Menu : Poulet", output[3]);
+		String[] actualOutput = outContent.toString().replace("\r\n", "\n").split("\n");
+        assertEquals("Vous avez choisi comme Menu : Poulet", actualOutput[5]);
 	}
 
 	
