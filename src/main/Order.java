@@ -1,5 +1,12 @@
 package main;
 
+import java.io.IOException;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import static java.nio.file.StandardOpenOption.APPEND;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -44,7 +51,7 @@ public class Order {
     		i++;
     	}
     	
-    	System.out.print("Que souhaitez-vous comme " + contextOfChoice + " ? ");
+    	System.out.println("Que souhaitez-vous comme " + contextOfChoice + " ?");
 	}
 	
 	/** 
@@ -58,7 +65,7 @@ public class Order {
 		
 		// Bad choice, the number is outside of array dimensions of choiceArray: [1 to choiceArray.length]
 		if (SelectedChoice<1 || SelectedChoice>choiceArray.length) {
-			System.out.print("Vous n'avez pas choisi de " + contextOfChoice + " parmi les choix proposés! ");
+			System.out.println("Vous n'avez pas choisi de " + contextOfChoice + " parmi les choix proposés!");
 			return;
 		}
 		
@@ -86,7 +93,7 @@ public class Order {
 			}
 			catch (InputMismatchException e) {
 				this.scan.next();				
-				System.out.print("Veuilliez saisir un chiffre, s'il vous plaît! ");
+				System.out.print("Veuilliez saisir un chiffre, s'il vous plaît!");
 			}	
 			
 			// Displays the selected choice among the possibilities of choice array
@@ -98,6 +105,23 @@ public class Order {
 		summaryOfOrder += "\t" + contextOfChoice + ": " + choiceArray[result - 1] + "%n";
 		
 		return result;
+	}
+	
+	/**
+	 * Adds a string into the file 
+	 * 
+	 * @param str String which is added to the file
+	 * @param path String corresponding to the file path
+	 */
+	public void addTextInFile(String str, String path) {
+		
+		Path pathFile = Paths.get(path);
+		
+		try {
+			Files.write(pathFile, String.format(str).getBytes(), APPEND);
+		} catch (IOException e) {			
+			System.out.println("Une erreur est survenue, veuillez rééssayer plus tard!");
+		}		
 	}
 	
 	/**
@@ -121,11 +145,15 @@ public class Order {
 		 * 		Side: fresh vegetables or Rice or Not rice
 		 * 		Drink: Still water or Sparkling water or Soda
 		 */
-			
+		
 		// Displays the various steps in the user choice for the menu
-		// The choice is stored in menuResult
+		// The choice is stored in menuResult		
 		int menuResult = this.choiceAndSelection("Menu", this.menuArray);
 		
+		// the string below contains the various user's choices for an only order
+		int temp = menuResult;
+		String summaryOneOrderCSV = String.valueOf(temp) + ",";
+
 		//---------------------------------------------------------------------------------------
 		
 		switch (menuResult) {
@@ -135,10 +163,12 @@ public class Order {
 				this.sideArray = side1Array;
 				
 				// SIDE: Displays the various steps in the user choice
-				this.choiceAndSelection("Accompagnement", this.sideArray);
+				temp = this.choiceAndSelection("Accompagnement", this.sideArray);
+				summaryOneOrderCSV += String.valueOf(temp) + ",";
 				
 				// DRINK: Displays the various steps in the user choice
-				this.choiceAndSelection("Boisson", this.drinkArray);
+				temp = this.choiceAndSelection("Boisson", this.drinkArray);
+				summaryOneOrderCSV += String.valueOf(temp) + "%n";
 				
 				break;			
 			case 2:
@@ -146,7 +176,11 @@ public class Order {
 				this.sideArray = side2Array;
 				
 				// SIDE: Displays the various steps in the user choice
-				this.choiceAndSelection("Accompagnement", this.sideArray);
+				temp = this.choiceAndSelection("Accompagnement", this.sideArray);
+				summaryOneOrderCSV += String.valueOf(temp) + ",";
+				
+				// DRINK: Not drink in this menu
+				summaryOneOrderCSV += "-1%n";
 				
 				break;
 			case 3:
@@ -154,13 +188,18 @@ public class Order {
 				this.sideArray = side3Array;
 				
 				// SIDE: Displays the various steps in the user choice
-				this.choiceAndSelection("Accompagnement", this.sideArray);
+				temp = this.choiceAndSelection("Accompagnement", this.sideArray);
+				summaryOneOrderCSV += String.valueOf(temp) + ",";
 				
 				// DRINK: Displays the various steps in the user choice
-				this.choiceAndSelection("Boisson", this.drinkArray);
+				temp = this.choiceAndSelection("Boisson", this.drinkArray);
+				summaryOneOrderCSV += String.valueOf(temp) + "%n";
 				
 				break;	
 		}	
+		
+		// Saving into the Order file
+		this.addTextInFile(summaryOneOrderCSV, "Other/Order.csv");
 	}
 	
 	/**
@@ -168,7 +207,7 @@ public class Order {
 	 */
 	public void runSeveralMenus() {
 		
-		System.out.print("Combien de menu désirez-vous commander, s'il vous plaît ? ");
+		System.out.println("Combien de menu désirez-vous commander, s'il vous plaît ?");
 		
 		int numberOfMenu = 0;
 
@@ -177,29 +216,35 @@ public class Order {
 		}
 		catch (InputMismatchException e) {
 			this.scan.next();				
-			System.out.print("Veuilliez saisir un chiffre, s'il vous plaît! ");
+			System.out.println("Veuilliez saisir un chiffre, s'il vous plaît!");
 		}
 		
 		System.out.println("");
 		
-		int i = 0;
-		
-		while (i < numberOfMenu) {
+		// Displays the summary of the order if the menu number is not zero
+		if (numberOfMenu != 0) {
 			
-			System.out.println("Num " + (i+1) + ":");
+			int i = 0;
 			
-			// Add to the summary of the order
-			summaryOfOrder += "Num " + (i+1) + ":%n";
+			while (i < numberOfMenu) {
+				
+				System.out.println("Num " + (i+1) + ":");
+				
+				// Add to the summary of the order
+				summaryOfOrder += "Num " + (i+1) + ":%n";
+				
+				this.runMenu();
+				
+				System.out.println("");
+				
+				i++;
+			}
 			
-			this.runMenu();
-			
-			System.out.println("");
-			
-			i++;
+			System.out.println(String.format(summaryOfOrder));
 		}
-		
-		// Displays the summary of the order
-		System.out.println(String.format(summaryOfOrder));
+		else {
+			System.out.println("Aucune commande!");
+		}
 	}
 	
 	private Scanner scan;
