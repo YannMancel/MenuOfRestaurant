@@ -11,7 +11,14 @@ public class Main {
 		*/
 		
 		// Read the CSV file which summaries the menu choices
+		/*
 		OrderReader myOrderReader = new OrderReader();
 		myOrderReader.readAllExceptFirstLine("Other/Order.csv");
+		*/		
+		
+		// Read the CSV file which summaries the menu choices
+		// Using Commons-CSV library
+		OrderReader myOrderReader = new OrderReader();
+		myOrderReader.readAllExceptFirstLine_CommonsCSV("Other/Order.csv");
 	}
 }

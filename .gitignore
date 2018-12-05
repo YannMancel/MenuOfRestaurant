@@ -1,5 +1,7 @@
 # Eclipse folder
 /bin/
+/target/
+/.settings/
 
 # Eclipse files
 .classpath
